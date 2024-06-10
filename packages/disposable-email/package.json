@@ -1,0 +1,30 @@
+{
+  "name": "@staart/disposable-email",
+  "version": "2.0.3",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "repository": "git@github.com:staart/packages",
+  "author": "Anand Chowdhary <mail@anandchowdhary.com>",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@staart/errors": "^2.1.1",
+    "@staart/validate": "^3.0.1",
+    "@types/hapi__joi": "^17.1.4",
+    "dotenv": "^8.2.0",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "disposable-email-domains": "^1.0.57",
+    "matcher": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@staart/errors": "^2.1.1",
+    "@staart/validate": "^3.0.1",
+    "dotenv": "^8.2.0"
+  }
+}

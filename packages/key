@@ -1,0 +1,39 @@
+const crypto = require('crypto');
+
+// Hàm tạo API key ngẫu nhiên
+function generateApiKey() {
+    return crypto.randomBytes(32).toString('hex'); // Tạo một chuỗi ngẫu nhiên 64 ký tự (32 bytes)
+}
+
+// Hàm mã hóa API key
+function encryptApiKey(apiKey, secretKey) {
+    const iv = crypto.randomBytes(16); // Tạo IV ngẫu nhiên
+    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(secretKey, 'hex'), iv);
+    let encrypted = cipher.update(apiKey, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return iv.toString('hex') + ':' + encrypted; // Kết hợp IV và dữ liệu mã hóa
+}
+
+// Hàm giải mã API key
+function decryptApiKey(encryptedApiKey, secretKey) {
+    const parts = encryptedApiKey.split(':');
+    const iv = Buffer.from(parts.shift(), 'hex'); // Lấy IV từ phần đầu
+    const encryptedText = Buffer.from(parts.join(':'), 'hex');
+    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey, 'hex'), iv);
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+}
+
+// Sử dụng hàm
+const secretKey = crypto.randomBytes(32).toString('hex'); // Tạo secret key (64 ký tự)
+const apiKey = crypto.randomBytes(32).toString('hex'); // Tạo API key
+const encryptedApiKey = encryptApiKey(apiKey, secretKey); // Mã hóa API key
+
+console.log('Secret Key:', secretKey);
+console.log('API Key:', apiKey);
+console.log('Encrypted API Key:', encryptedApiKey);
+
+// Giải mã API key
+const decryptedApiKey = decryptApiKey(encryptedApiKey, secretKey);
+console.log('Decrypted API Key:', decryptedApiKey);
